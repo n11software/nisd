@@ -1,6 +1,0 @@
-boot*.efi
-
-CMakeFiles/
-cmake_install.cmake
-
-build/
