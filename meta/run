@@ -1,0 +1,531 @@
+#!/bin/bash
+
+qemu_config="./.qemu-config"
+
+# Define colors
+readonly COLOR_TITLE='\033[1;36m'  # Bold Cyan
+readonly COLOR_BOLD='\033[1;34m'  # Bold Blue (fixed incorrect color code)
+readonly COLOR_PROMPT='\033[1;32m'  # Bold Green
+readonly COLOR_DEFAULT='\033[0m'  # Reset color
+
+main_menu() {
+    local choice
+    source "$qemu_config"
+
+    while true; do
+        clear
+        echo -e "${COLOR_TITLE}====== NISD QEMU VM ======${COLOR_DEFAULT}"
+        echo -e "1. Boot"
+        echo -e "2. Configure QEMU emulation"
+        echo -e "3. Boot and Debug"
+        echo -e "4. Quit"
+        echo -e "${COLOR_TITLE}====== NISD QEMU VM ======${COLOR_DEFAULT}"
+        read -p "Enter your choice: " choice
+        echo ""
+
+        case $choice in
+            1)
+                bootQEMU
+                ;;
+            2)
+                config_menu
+                ;;
+            3)
+                debugQEMU
+                ;;
+            4)
+                clear
+                exit 0
+                ;;
+            *)
+                echo -e "${COLOR_PROMPT}Invalid option. Please choose again.${COLOR_DEFAULT}"
+                ;;
+        esac
+    done
+}
+
+bootQEMU() {
+    source "$qemu_config"
+
+    local cmd="qemu-system-x86_64"
+    local machine_option=""
+    local cpu_option=""
+    local ram_option=""
+    local hdd_option=""
+    local cdrom_option=""
+    local graphics_option=""
+    local pci_option=""
+    local serial_option=""
+    local chardev_option=""
+    local display_option=""
+
+    # Required options
+    cmd+=" -drive format=raw,file=build/nisd.iso"
+    cmd+=" -drive if=pflash,format=raw,unit=0,file=share/res/ovmf/OVMF_CODE.fd,readonly=on"
+    cmd+=" -drive if=pflash,format=raw,unit=1,file=share/res/ovmf/OVMF_VARS.fd"
+
+    # Add optional configurations if they are set
+    if [[ -n $QEMU_CONFIG_MACHINE ]]; then
+        machine_option="-machine $QEMU_CONFIG_MACHINE"
+    fi
+    if [[ -n $QEMU_CONFIG_CPU ]]; then
+        cpu_option="-cpu $QEMU_CONFIG_CPU"
+    fi
+    if [[ -n $QEMU_CONFIG_RAM ]]; then
+        ram_option="-m $QEMU_CONFIG_RAM"
+    fi
+    if [[ -n $QEMU_CONFIG_HDD ]]; then
+        hdd_option="-drive format=raw,file=$QEMU_CONFIG_HDD"
+    fi
+    if [[ -n $QEMU_CONFIG_OPT ]]; then
+        cdrom_option="-drive file=$QEMU_CONFIG_OPT,media=cdrom"
+    fi
+    if [[ -n $QEMU_CONFIG_GRAPHICS ]]; then
+        graphics_option="-vga $QEMU_CONFIG_GRAPHICS"
+    fi
+    if [[ -n $QEMU_CONFIG_PCI && $QEMU_CONFIG_PCI == "yes" ]]; then
+        pci_option="-device vfio-pci"
+    fi
+    if [[ -n $QEMU_CONFIG_SERIAL ]]; then
+        serial_option="-serial $QEMU_CONFIG_SERIAL"
+    fi
+    if [[ -n $QEMU_CONFIG_CHARDEV ]]; then
+        chardev_option="-chardev $QEMU_CONFIG_CHARDEV"
+    fi
+    if [[ -n $QEMU_CONFIG_DISPLAY ]]; then
+        display_option="-display $QEMU_CONFIG_DISPLAY"
+    fi
+
+    # Combine all options into the command
+    cmd+=" $machine_option $cpu_option $ram_option $hdd_option $cdrom_option $graphics_option $pci_option $serial_option $chardev_option $display_option"
+
+    # FIXME: figure why the script just flickers but doesn't wanna run qemu directly
+        # Write the command to run_qemu.sh
+    echo "#!/bin/bash" > meta/.run_qemu.sh
+    echo "" >> meta/.run_qemu.sh
+    echo "source \"$qemu_config\"" >> meta/.run_qemu.sh
+    echo "$cmd" >> meta/.run_qemu.sh
+
+    # Make run_qemu.sh executable
+    chmod +x meta/.run_qemu.sh
+
+    ./meta/.run_qemu.sh
+    clear
+    main_menu
+}
+
+debugQEMU() {
+    source "$qemu_config"
+
+    local cmd="qemu-system-x86_64"
+    local machine_option=""
+    local cpu_option=""
+    local ram_option=""
+    local hdd_option=""
+    local cdrom_option=""
+    local graphics_option=""
+    local pci_option=""
+    local serial_option=""
+    local chardev_option=""
+    local display_option=""
+
+    # Required options
+    cmd+=" -s -S"
+    cmd+=" -drive format=raw,file=build/nisd.iso"
+    cmd+=" -drive if=pflash,format=raw,unit=0,file=share/res/ovmf/OVMF_CODE.fd,readonly=on"
+    cmd+=" -drive if=pflash,format=raw,unit=1,file=share/res/ovmf/OVMF_VARS.fd"
+
+    # Add optional configurations if they are set
+    if [[ -n $QEMU_CONFIG_MACHINE ]]; then
+        machine_option="-machine $QEMU_CONFIG_MACHINE"
+    fi
+    if [[ -n $QEMU_CONFIG_CPU ]]; then
+        cpu_option="-cpu $QEMU_CONFIG_CPU"
+    fi
+    if [[ -n $QEMU_CONFIG_RAM ]]; then
+        ram_option="-m $QEMU_CONFIG_RAM"
+    fi
+    if [[ -n $QEMU_CONFIG_HDD ]]; then
+        hdd_option="-drive format=raw,file=$QEMU_CONFIG_HDD"
+    fi
+    if [[ -n $QEMU_CONFIG_OPT ]]; then
+        cdrom_option="-drive file=$QEMU_CONFIG_OPT,media=cdrom"
+    fi
+    if [[ -n $QEMU_CONFIG_GRAPHICS ]]; then
+        graphics_option="-vga $QEMU_CONFIG_GRAPHICS"
+    fi
+    if [[ -n $QEMU_CONFIG_PCI && $QEMU_CONFIG_PCI == "yes" ]]; then
+        pci_option="-device vfio-pci"
+    fi
+    if [[ -n $QEMU_CONFIG_SERIAL ]]; then
+        serial_option="-serial $QEMU_CONFIG_SERIAL"
+    fi
+    if [[ -n $QEMU_CONFIG_CHARDEV ]]; then
+        chardev_option="-chardev $QEMU_CONFIG_CHARDEV"
+    fi
+    if [[ -n $QEMU_CONFIG_DISPLAY ]]; then
+        display_option="-display $QEMU_CONFIG_DISPLAY"
+    fi
+
+    # Combine all options into the command
+    cmd+=" $machine_option $cpu_option $ram_option $hdd_option $cdrom_option $graphics_option $pci_option $serial_option $chardev_option $display_option"
+
+    # Write the command to run_qemu.sh
+    echo "#!/bin/bash" > meta/run_qemu.sh
+    echo "" >> meta/run_qemu.sh
+    echo "source \"$qemu_config\"" >> meta/run_qemu.sh
+    echo "$cmd" >> meta/run_qemu.sh
+
+    # Make run_qemu.sh executable
+    chmod +x meta/run_qemu.sh
+
+    ./meta/.run_qemu.sh
+    clear
+    main_menu
+}
+
+config_menu() {
+    local choice
+    source "$qemu_config"
+
+    while true; do
+        clear
+        echo -e "${COLOR_TITLE}====== NISD QEMU VM CONFIG ======${COLOR_DEFAULT}"
+        echo -e "1. Machine: $QEMU_CONFIG_MACHINE"
+        echo -e "2. CPU: $QEMU_CONFIG_CPU"
+        echo -e "3. RAM: $QEMU_CONFIG_RAM"
+        echo -e "4. HDD opt.: $QEMU_CONFIG_HDD"
+        echo -e "5. CD-ROM opt.: $QEMU_CONFIG_OPT"
+        echo -e "6. Graphics Card opt.: $QEMU_CONFIG_GRAPHICS"
+        echo -e "7. PCI Pass-through: $QEMU_CONFIG_PCI"
+        echo -e "8. Serial: $QEMU_CONFIG_SERIAL"
+        echo -e "9. Display: $QEMU_CONFIG_DISPLAY"
+        echo ""
+        echo -e "s. Start QEMU"
+        echo -e "q. Quit"
+        echo -e "b. Back to Main Menu"
+        echo -e "${COLOR_TITLE}==================================${COLOR_DEFAULT}"
+        read -p "Enter your choice: " choice
+        echo ""
+
+        case $choice in
+            1)
+                select_machine
+                ;;
+            2)
+                select_cpu
+                ;;
+            3)
+                select_ram
+                ;;
+            4)
+                select_hdd
+                ;;
+            5)
+                select_cdrom
+                ;;
+            6)
+                select_graphics_card
+                ;;
+            7)
+                select_pci_passthrough
+                ;;
+            8)
+                select_serial
+                ;;
+            9)
+                select_display
+                ;;
+            s)
+                start_qemu
+                ;;
+            q)
+                exit 0
+                ;;
+            b)
+                return
+                ;;
+            *)
+                echo -e "Invalid option"
+                ;;
+        esac
+    done
+}
+
+select_machine() {
+    clear
+    local choice
+    echo -e "${COLOR_TITLE}====== NISD QEMU KVM CONFIG ======${COLOR_DEFAULT}"
+    echo -e "1. q35"
+    echo -e "${COLOR_PROMPT}Enter your choice: ${COLOR_DEFAULT}"
+    read -p "Machine type: " choice
+    echo ""
+    echo -e "${COLOR_TITLE}==================================${COLOR_DEFAULT}"
+
+    case $choice in
+        1) QEMU_CONFIG_MACHINE="q35" ;;
+        *)
+            echo -e "${COLOR_PROMPT}Invalid option. Please choose again.${COLOR_DEFAULT}"
+            select_machine
+            return
+            ;;
+    esac
+
+    # Save the selected machine type to the configuration file
+    sed -i "s/^QEMU_CONFIG_MACHINE=.*/QEMU_CONFIG_MACHINE=\"$QEMU_CONFIG_MACHINE\"/" "$qemu_config"
+    echo -e "${COLOR_PROMPT}Machine type set to $QEMU_CONFIG_MACHINE.${COLOR_DEFAULT}"
+}
+
+select_cpu() {
+    local choice
+    clear
+    echo -e "${COLOR_TITLE}====== Select CPU Type ======${COLOR_DEFAULT}"
+    echo -e "1. AMD EPYC (EPYC)"
+    echo -e "2. AMD EPYC Genoa (EPYC-Genoa)"
+    echo -e "3. AMD EPYC Milan (EPYC-Milan)"
+    echo -e "4. AMD EPYC Rome (EPYC-Rome)"
+    echo -e "5. Intel Core Broadwell (Broadwell)"
+    echo -e "6. Intel Core Haswell (Haswell)"
+    echo -e "7. Intel Core Sky Lake (Skylake-Client)"
+    echo -e "8. Intel Core Duo (coreduo)"
+    echo -e "9. Intel Core 2 Duo (core2duo)"
+    echo -e "10. Intel Xeon Cascade Lake (Cascadelake-Server)"
+    echo -e "11. Intel Xeon Ice Lake (Icelake-Server)"
+    echo -e "12. Intel Xeon Sky Lake (Skylake-Server)"
+    echo -e "13. Intel Xeon Cooper Lake (Cooperlake)"
+    echo -e "14. Intel Xeon Ivy Bridge (IvyBridge)"
+    echo -e "15. Intel Xeon Sapphire Rapids (SapphireRapids)"
+    echo -e "16. Intel Atom Denverton (Denverton)"
+    echo -e "17. Intel Atom Snowridge (Snowridge)"
+    echo -e "18. Intel Celeron (Conroe)"
+    echo -e "19. QEMU Virtual CPU (qemu64)"
+    echo -e "${COLOR_TITLE}=================================${COLOR_DEFAULT}"
+    read -p "Enter your choice: " choice
+    echo ""
+
+    case $choice in
+        1) QEMU_CONFIG_CPU="EPYC" ;;
+        2) QEMU_CONFIG_CPU="EPYC-Genoa" ;;
+        3) QEMU_CONFIG_CPU="EPYC-Milan" ;;
+        4) QEMU_CONFIG_CPU="EPYC-Rome" ;;
+        5) QEMU_CONFIG_CPU="Broadwell" ;;
+        6) QEMU_CONFIG_CPU="Haswell" ;;
+        7) QEMU_CONFIG_CPU="Skylake-Client" ;;
+        8) QEMU_CONFIG_CPU="coreduo" ;;
+        9) QEMU_CONFIG_CPU="core2duo" ;;
+        10) QEMU_CONFIG_CPU="Cascadelake-Server" ;;
+        11) QEMU_CONFIG_CPU="Icelake-Server" ;;
+        12) QEMU_CONFIG_CPU="Skylake-Server" ;;
+        13) QEMU_CONFIG_CPU="Cooperlake" ;;
+        14) QEMU_CONFIG_CPU="IvyBridge" ;;
+        15) QEMU_CONFIG_CPU="SapphireRapids" ;;
+        16) QEMU_CONFIG_CPU="Denverton" ;;
+        17) QEMU_CONFIG_CPU="Snowridge" ;;
+        18) QEMU_CONFIG_CPU="Conroe" ;;
+        19) QEMU_CONFIG_CPU="qemu64" ;;
+        *)
+            echo -e "${COLOR_PROMPT}Invalid option. Please choose again.${COLOR_DEFAULT}"
+            select_cpu
+            return
+            ;;
+    esac
+
+    # Save the selected CPU to the configuration file
+    sed -i "s/^QEMU_CONFIG_CPU=.*/QEMU_CONFIG_CPU=\"$QEMU_CONFIG_CPU\"/" "$qemu_config"
+    echo -e "${COLOR_PROMPT}CPU set to $QEMU_CONFIG_CPU.${COLOR_DEFAULT}"
+}
+
+select_ram() {
+    clear
+    local ram
+    echo -e "${COLOR_TITLE}====== NISD QEMU KVM CONFIG ======${COLOR_DEFAULT}"
+    echo -e "${COLOR_PROMPT}Enter the RAM size (128M to 8G): ${COLOR_DEFAULT}"
+    read -p "RAM size: " ram
+    echo ""
+    echo -e "${COLOR_TITLE}==================================${COLOR_DEFAULT}"
+
+    # Validate the RAM input
+    if [[ $ram =~ ^[0-9]+[MG]$ ]]; then
+        value=${ram%[MG]}
+        unit=${ram#${value}}
+
+        if [[ $unit == "M" && $value -ge 128 && $value -le 8192 ]]; then
+            QEMU_CONFIG_RAM=$ram
+        elif [[ $unit == "G" && $value -ge 1 && $value -le 8 ]]; then
+            QEMU_CONFIG_RAM=$ram
+        else
+            echo -e "${COLOR_PROMPT}Invalid RAM size. Please enter a value between 128M and 8G.${COLOR_DEFAULT}"
+            select_ram
+            return
+        fi
+    else
+        echo -e "${COLOR_PROMPT}Invalid format. Please enter the RAM size in the format [0-9]+[M|G].${COLOR_DEFAULT}"
+        select_ram
+        return
+    fi
+
+    # Save the selected RAM to the configuration file
+    sed -i "s/^QEMU_CONFIG_RAM=.*/QEMU_CONFIG_RAM=\"$QEMU_CONFIG_RAM\"/" "$qemu_config"
+    echo -e "${COLOR_PROMPT}RAM set to $QEMU_CONFIG_RAM.${COLOR_DEFAULT}"
+}
+
+select_hdd() {
+    clear
+    local hdd
+    echo -e "${COLOR_TITLE}====== NISD QEMU KVM CONFIG ======${COLOR_DEFAULT}"
+    echo -e "${COLOR_PROMPT}Enter the HDD file path (or press Enter to skip): ${COLOR_DEFAULT}"
+    read -p "HDD file: " hdd
+    echo ""
+    echo -e "${COLOR_TITLE}==================================${COLOR_DEFAULT}"
+
+    if [[ -n $hdd ]]; then
+        QEMU_CONFIG_HDD=$hdd
+        # Save the selected HDD to the configuration file
+        sed -i "s/^QEMU_CONFIG_HDD=.*/QEMU_CONFIG_HDD=\"$QEMU_CONFIG_HDD\"/" "$qemu_config"
+        echo -e "${COLOR_PROMPT}HDD set to $QEMU_CONFIG_HDD.${COLOR_DEFAULT}"
+    else
+        echo -e "${COLOR_PROMPT}HDD not set. Skipping.${COLOR_DEFAULT}"
+    fi
+}
+
+select_cdrom() {
+    clear
+    local cdrom
+    echo -e "${COLOR_TITLE}====== NISD QEMU KVM CONFIG ======${COLOR_DEFAULT}"
+    echo -e "${COLOR_PROMPT}Enter the CD-ROM file path (or press Enter to skip): ${COLOR_DEFAULT}"
+    read -p "CD-ROM file: " cdrom
+    echo ""
+    echo -e "${COLOR_TITLE}==================================${COLOR_DEFAULT}"
+
+    if [[ -n $cdrom ]]; then
+        QEMU_CONFIG_OPT=$cdrom
+        # Save the selected CD-ROM to the configuration file
+        sed -i "s/^QEMU_CONFIG_OPT=.*/QEMU_CONFIG_OPT=\"$QEMU_CONFIG_OPT\"/" "$qemu_config"
+        echo -e "${COLOR_PROMPT}CD-ROM set to $QEMU_CONFIG_OPT.${COLOR_DEFAULT}"
+    else
+        echo -e "${COLOR_PROMPT}CD-ROM not set. Skipping.${COLOR_DEFAULT}"
+    fi
+}
+
+select_graphics_card() {
+    clear
+    local choice
+    echo -e "${COLOR_TITLE}====== NISD QEMU KVM CONFIG ======${COLOR_DEFAULT}"
+    echo -e "1. Cirrus"
+    echo -e "2. Std"
+    echo -e "3. VMware"
+    echo -e "4. QXL"
+    echo -e "${COLOR_PROMPT}Enter your choice: ${COLOR_DEFAULT}"
+    read -p "Graphics Card: " choice
+    echo ""
+    echo -e "${COLOR_TITLE}==================================${COLOR_DEFAULT}"
+
+    case $choice in
+        1) QEMU_CONFIG_GRAPHICS="cirrus" ;;
+        2) QEMU_CONFIG_GRAPHICS="std" ;;
+        3) QEMU_CONFIG_GRAPHICS="vmware" ;;
+        4) QEMU_CONFIG_GRAPHICS="qxl" ;;
+        *)
+            echo -e "${COLOR_PROMPT}Invalid option. Please choose again.${COLOR_DEFAULT}"
+            select_graphics_card
+            return
+            ;;
+    esac
+
+    # Save the selected graphics card to the configuration file
+    sed -i "s/^QEMU_CONFIG_GRAPHICS=.*/QEMU_CONFIG_GRAPHICS=\"$QEMU_CONFIG_GRAPHICS\"/" "$qemu_config"
+    echo -e "${COLOR_PROMPT}Graphics Card set to $QEMU_CONFIG_GRAPHICS.${COLOR_DEFAULT}"
+}
+
+select_pci_passthrough() {
+    clear
+    local choice
+    echo -e "${COLOR_TITLE}====== NISD QEMU KVM CONFIG ======${COLOR_DEFAULT}"
+    echo -e "${COLOR_PROMPT}Enable PCI Passthrough? (yes/no): ${COLOR_DEFAULT}"
+    read -p "PCI Passthrough: " choice
+    echo ""
+    echo -e "${COLOR_TITLE}==================================${COLOR_DEFAULT}"
+
+    case $choice in
+        yes|Yes|YES) QEMU_CONFIG_PCI="yes" ;;
+        no|No|NO) QEMU_CONFIG_PCI="no" ;;
+        *)
+            echo -e "${COLOR_PROMPT}Invalid option. Please choose again.${COLOR_DEFAULT}"
+            select_pci_passthrough
+            return
+            ;;
+    esac
+
+    # Save the PCI passthrough setting to the configuration file
+    sed -i "s/^QEMU_CONFIG_PCI=.*/QEMU_CONFIG_PCI=\"$QEMU_CONFIG_PCI\"/" "$qemu_config"
+    echo -e "${COLOR_PROMPT}PCI Passthrough set to $QEMU_CONFIG_PCI.${COLOR_DEFAULT}"
+}
+
+select_serial() {
+    clear
+    local choice
+    echo -e "${COLOR_TITLE}====== NISD QEMU KVM CONFIG ======${COLOR_DEFAULT}"
+    echo -e "1. Output to stdout (mon:stdio)"
+    echo -e "2. Output to file (file:dmesg)"
+    echo -e "3. Both stdout and file"
+    echo -e "${COLOR_PROMPT}Enter your choice: ${COLOR_DEFAULT}"
+    read -p "Serial Output: " choice
+    echo ""
+    echo -e "${COLOR_TITLE}==================================${COLOR_DEFAULT}"
+
+    case $choice in
+        1)
+            QEMU_CONFIG_SERIAL="mon:stdio"
+            ;;
+        2)
+            QEMU_CONFIG_SERIAL="file:dmesg"
+            ;;
+        3)
+            QEMU_CONFIG_SERIAL="chardev:char0"
+            QEMU_CONFIG_CHARDEV="stdio,id=char0,logfile=dmesg,signal=off"
+            ;;
+        *)
+            echo -e "${COLOR_PROMPT}Invalid option. Please choose again.${COLOR_DEFAULT}"
+            select_serial
+            return
+            ;;
+    esac
+
+    # Save the serial output setting to the configuration file
+    sed -i "s/^QEMU_CONFIG_SERIAL=.*/QEMU_CONFIG_SERIAL=\"$QEMU_CONFIG_SERIAL\"/" "$qemu_config"
+    if [[ $choice == 3 ]]; then
+        sed -i "s/^QEMU_CONFIG_CHARDEV=.*/QEMU_CONFIG_CHARDEV=\"$QEMU_CONFIG_CHARDEV\"/" "$qemu_config"
+    fi
+    echo -e "${COLOR_PROMPT}Serial output set to $QEMU_CONFIG_SERIAL.${COLOR_DEFAULT}"
+}
+
+select_display() {
+    clear
+    local choice
+    echo -e "${COLOR_TITLE}====== NISD QEMU KVM CONFIG ======${COLOR_DEFAULT}"
+    echo -e "1. None"
+    echo -e "2. GTK"
+    echo -e "3. SDL"
+    echo -e "${COLOR_PROMPT}Enter your choice: ${COLOR_DEFAULT}"
+    read -p "Display: " choice
+    echo ""
+    echo -e "${COLOR_TITLE}==================================${COLOR_DEFAULT}"
+
+    case $choice in
+        1) QEMU_CONFIG_DISPLAY="none" ;;
+        2) QEMU_CONFIG_DISPLAY="gtk" ;;
+        3) QEMU_CONFIG_DISPLAY="sdl" ;;
+        *)
+            echo -e "${COLOR_PROMPT}Invalid option. Please choose again.${COLOR_DEFAULT}"
+            select_display
+            return
+            ;;
+    esac
+
+    # Save the display setting to the configuration file
+    sed -i "s/^QEMU_CONFIG_DISPLAY=.*/QEMU_CONFIG_DISPLAY=\"$QEMU_CONFIG_DISPLAY\"/" "$qemu_config"
+    echo -e "${COLOR_PROMPT}Display set to $QEMU_CONFIG_DISPLAY.${COLOR_DEFAULT}"
+}
+
+main_menu
+

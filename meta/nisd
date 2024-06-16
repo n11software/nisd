@@ -1,0 +1,122 @@
+#!/bin/bash
+
+# make this look better please for the love of god me - atl.
+
+# Checks if the script is being run from the root repository or not.
+checkdir() {
+	scriptPath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+	parentDir="$(basename "$(dirname "$script_path")")"
+
+	# the current issue is that if the user changes the nisd base folder to
+	# a different name, it will assume you aren't running the script in
+	# the correct place.
+	#	-atl.
+	# TODO: make this so that it checks based on pwd relative to the script
+	if [ "$parentDir" != "nisd" ]; then	
+		echo "error: the script must be ran from the 'nisd' directory."
+		echo "parentDir: $parentDir"
+		return 1
+	fi
+}
+
+# Imports source trees from various git sources
+import() {
+	# TODO: make a release file in root that contains lists of what versions
+	# of each part you want to import.
+	ping -c 4 n11.dev # test ping n11.dev
+
+	if [ $? -ne 0 ]; then
+		echo "n11.dev is down. Cloning from GitHub."
+		# We're gonna assume you want the UTD version for now (see above comment)
+		git clone --depth=1 https://github.com/n11software/bob.git boot/
+		git clone --depth=1 https://github.com/n11software/inferno.git kernel/
+		git clone --depth=1 https://github.com/n11software/misc-lib.git lib/
+		git clone --depth=1 https://github.com/n11software/nlibc.git lib/libc/
+		git clone --depth=1 https://github.com/n11software/bin.git bin/
+		git clone --depth=1 https://github.com/n11software/gnu.git toolchain/gnu/
+	else
+		git clone --depth=1 git://n11.dev/nisd/bob.git boot/
+		git clone --depth=1 git://n11.dev/nisd/inferno.git kernel/
+		git clone --depth=1 git://n11.dev/nisd/misc-lib.git lib/
+		git clone --depth=1 git://n11.dev/nisd/dist/nlibc.git lib/libc/
+		git clone --depth=1 git://n11.dev/nisd/dist/bin.git bin/
+		git clone --depth=1 git://n11.dev/nisd/dist/gnu.git toolchain/gnu/
+	fi
+}
+
+buildbootloader() {
+	cd boot
+	mkdir -p build && cd build
+	cmake -GNinja ..
+	ninja
+	cd ../../
+}
+
+cleanbootloader() {
+	cd boot
+	rm -rf build && mkdir build
+	cd ../
+}
+
+buildkernel() {
+	cd kernel/
+	mkdir -p build && cd build
+	cmake -GNinja ..
+	ninja
+	cd ../../
+}
+
+cleankernel() {
+	cd kernel/
+	rm -rf build/ && mkdir build
+	cd ../
+}
+
+setupiso() {
+	echo "Setting up ISO file tree."
+	mkdir -p build/iso/EFI/BOOT
+	echo "Copying resources..."
+	cp res/* build/iso/.
+	bootloader="boot/build/bootx64.efi"
+	if [ ! -f "$bootloader" ]; then
+		cleanbootloader
+		buildbootloader
+	fi
+	echo "Copying bootloader..."
+	cp $bootloader build/iso/EFI/BOOT/.
+	kernel="kernel/build/kernel"
+	if [ ! -f "$kernel" ]; then
+		cleankernel
+		buildkernel
+	fi
+	echo "Copying kernel..."
+	cp $kernel build/iso/.
+}
+
+buildiso() {
+	setupiso
+	echo "Building ISO image"
+	dd if=/dev/zero of=build/iso/nisd.img bs=512 count=93750
+	mformat -i build/iso/nisd.img -F ::
+	mmd -i build/iso/nisd.img ::/EFI
+	mmd -i build/iso/nisd.img ::/EFI/BOOT
+	mcopy -i build/iso/nisd.img build/iso/EFI/BOOT/bootx64.efi ::/EFI/BOOT
+	mcopy -i build/iso/nisd.img build/iso/error.tga ::
+	mcopy -i build/iso/nisd.img build/iso/kernel ::
+	mcopy -i build/iso/nisd.img build/iso/startup.nsh ::
+	mcopy -i build/iso/nisd.img build/iso/FreeSans.sfn ::
+	xorriso -as mkisofs -R -f -e nisd.img -no-emul-boot -V "NISD" -o build/nisd.iso build/iso/ > /dev/null 2>&1
+}
+
+case "$1" in
+	import) import ;;
+	buildbootloader) buildbootloader ;;
+	cleanbootloader) cleanbootloader ;;
+	buildkernel) buildkernel ;;
+	cleankernel) cleankernel ;;
+	buildiso) buildiso ;;
+	*)
+		echo "Usage: meta/build {}"
+		exit 1
+		;;
+esac

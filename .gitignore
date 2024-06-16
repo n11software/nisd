@@ -9,6 +9,11 @@ kernel/
 lib/
 toolchain/gnu/
 
+dmesg
+
+meta/.run_qemu.sh
+.qemu-config
+
 *.bin
 *.o
 *.so
