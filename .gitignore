@@ -3,6 +3,7 @@
 # in that subdirectory instead.
 
 bin/
+build/
 boot/
 kernel/
 lib/
