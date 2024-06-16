@@ -11,5 +11,5 @@
 
 void PageFault(void*) {
     kprintf("\r\e[31m[ERROR] Page Fault\e[0m\n\r");
-    asm("hlt");
+    while(1) asm("hlt");
 }

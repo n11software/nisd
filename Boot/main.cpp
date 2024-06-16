@@ -43,13 +43,8 @@ extern "C" __attribute__((ms_abi)) unsigned long long boot(void* ImageHandle, st
 	unsigned long long int MapSize, MapKey, DescriptorSize;
 	unsigned int DescriptorVersion; {
 		CheckStatus SystemTable->BootServices->GetMemoryMap(&MapSize, Map, &MapKey, &DescriptorSize, &DescriptorVersion);
-    MapSize += 2*DescriptorSize;
-    while (true) {
-      CheckStatus SystemTable->BootServices->AllocatePool(2, MapSize, (void**)&Map);
-      CheckStatus SystemTable->BootServices->GetMemoryMap(&MapSize, Map, &MapKey, &DescriptorSize, &DescriptorVersion);
-      if (status == 0) break;
-      else SystemTable->BootServices->FreePool(Map);
-    }
+    CheckStatus SystemTable->BootServices->AllocatePool(2, MapSize, (void**)&Map);
+    CheckStatus SystemTable->BootServices->GetMemoryMap(&MapSize, Map, &MapKey, &DescriptorSize, &DescriptorVersion);
 	}
 
   GUID gopGUID = GOPGUID;

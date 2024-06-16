@@ -45,14 +45,51 @@ __attribute__((sysv_abi)) void Inferno(BOB* bob) {
 
 	// Memory
 	Memory::Init(bob);
-	unsigned long long memory = Memory::GetFree();
+	unsigned long long memory = Memory::GetSize();
 	if (memory < 1073741824 && memory > 269484032) memory -= 269484032;
 	prInfo("mm", "Total Memory: %M", memory);
 
 	unsigned long long kSize = (unsigned long long)&InfernoEnd-(unsigned long long)&InfernoStart;
 	Paging::AllocatePages(&InfernoStart, kSize/1024+1);
+	Paging::AllocatePages(bob->framebuffer->Address, (bob->framebuffer->Size+4096)/4096+1);
 
-	// Create GDT
+	Paging::PageTable* lvl4 = (Paging::PageTable*)Paging::RequestPage();
+	memset(lvl4, 0, 4096);
+
+	Paging::TableManager PageTableManager(lvl4);
+
+	// Load APIC
+	if (APIC::Capable()) {
+			APIC::Enable();
+			prInfo("apic", "initalized APIC");
+	}
+
+	PCI::init();
+
+
+	// Create IDT
+	Interrupts::CreateIDT();
+	
+	// Load IDT
+	Interrupts::LoadIDT();
+	prInfo("idt", "initialized IDT");
+
+	// Create a test ISR
+	Interrupts::CreateISR(0x80, (void*)SyscallHandler);
+	Interrupts::CreateISR(0x0E, (void*)PageFault);
+	Interrupts::CreateISR(0x08, (void*)DoublePageFault);
+
+	for (unsigned long long i = 0; i < Memory::GetSize();i+=4096) {
+		PageTableManager.Map((void*)i, (void*)i);
+	}
+	for (unsigned long long i = (unsigned long long)bob->framebuffer->Address;
+		i < (unsigned long long)bob->framebuffer->Address+(unsigned long long)bob->framebuffer->Size;
+		i+=4096) {
+		PageTableManager.Map((void*)i, (void*)i);
+	}
+	// asm volatile ("mov %0, %%cr3" : : "r" ((unsigned long long)lvl4)); // FIXME: Causing qemu to reboot
+
+	// Usermode
 	#if EnableGDT == true
 		GDT::Table GDT = {
 			{ 0, 0, 0, 0x00, 0x00, 0 },
@@ -68,30 +105,11 @@ __attribute__((sysv_abi)) void Inferno(BOB* bob) {
 		prInfo("kernel", "initalized GDT");
 	#endif
 
-	// Create IDT
-	Interrupts::CreateIDT();
-
-	// Create a test ISR
-	Interrupts::CreateISR(0x80, (void*)SyscallHandler);
-	Interrupts::CreateISR(0x0E, (void*)PageFault);
-	Interrupts::CreateISR(0x08, (void*)DoublePageFault);
-
-	// Load APIC
-	if (APIC::Capable()) {
-			APIC::Enable();
-			prInfo("apic", "initalized APIC");
-	}
-
-	// Load IDT
-	Interrupts::LoadIDT();
-	prInfo("idt", "initialized IDT");
 
 	unsigned long res = 0;
 	asm volatile("int $0x80" : "=a"(res) : "a"(1), 
 		"d"((unsigned long)"Hello from syscall\n\r"), 
 		"D"((unsigned long)0) : "rcx", "r11", "memory");
-
-	PCI::init();
 }
 
 __attribute__((ms_abi)) [[noreturn]] void main(BOB* bob) {

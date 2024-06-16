@@ -11,7 +11,8 @@
 
 struct MemoryDescriptor {
     unsigned int Type;
-    unsigned long long PhysicalStart, VirtualStart, NumberOfPages, Attribute;
+    void* PhysicalStart, *VirtualStart;
+    unsigned long long NumberOfPages, Attribute;
 };
 
 struct BOB {

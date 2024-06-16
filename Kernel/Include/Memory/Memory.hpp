@@ -31,11 +31,13 @@ class Bitmap {
             return false;
         }
 
-        void Set(unsigned long long index, bool value) {
+        bool Set(unsigned long long index, bool value) {
+            if (index>Size*8) return false;
             unsigned long long byteIndex = index / 8;
             unsigned char bitIndex = index % 8;
             unsigned char bitIndexer = 0b10000000 >> bitIndex;
             Buffer[byteIndex] &= ~bitIndexer;
             if (value) Buffer[byteIndex] |= bitIndexer;
+            return true;
         }
 };
