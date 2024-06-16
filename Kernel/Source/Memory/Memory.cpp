@@ -1,5 +1,5 @@
 #include <Memory/Memory.hpp>
-#include <stddef.h>
+#include <Inferno/stddef.h>
 #include <Memory/Paging.h>
 #include <Memory/Mem_.hpp>
 #include <Inferno/Log.h>

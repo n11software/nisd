@@ -1,7 +1,7 @@
-#include <stdlib.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <unistd.h>
+#include <Inferno/stdlib.h>
+#include <Inferno/errno.h>
+#include <Inferno/types.h>
+#include <Inferno/unistd.h>
 
 #include <Inferno/Log.h>
 

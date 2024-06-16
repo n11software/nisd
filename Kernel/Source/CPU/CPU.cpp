@@ -1,7 +1,6 @@
 //========= Copyright N11 Software, All rights reserved. ============//
 //
 // File: CPU.cpp
-// Purpose: The Inferno kernel source code style guide.
 // Maintainer: atl
 //
 //===================================================================//
@@ -10,8 +9,6 @@
 #include <CPU/CPU.h>
 #include <CPU/CPUID.h>
 #include <CPU/VendorID.h>
-
-#include <string.h>
 
 namespace CPU {
 	void CPUDetect() {

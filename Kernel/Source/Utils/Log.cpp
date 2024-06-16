@@ -9,7 +9,7 @@
 #include <Inferno/Log.h>
 
 #include <Drivers/TTY/COM.h>
-#include <stdarg.h>
+#include <Inferno/stdarg.h>
 
 void prInfo(const char* subsystem, const char* message, ...) {
 	va_list args;

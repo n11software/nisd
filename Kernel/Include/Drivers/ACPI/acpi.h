@@ -6,7 +6,7 @@
 //
 //===================================================================//
 
-#include <stdint.h>
+#include <Inferno/stdint.h>
 
 /* ACPI v1.0 */
 struct rsdp_descriptor {

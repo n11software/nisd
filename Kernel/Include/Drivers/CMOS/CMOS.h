@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <sys/io.h>
+#include <Inferno/IO.h>
 
 enum {
       cmosAddress = 0x70,

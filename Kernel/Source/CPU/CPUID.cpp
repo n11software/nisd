@@ -11,8 +11,6 @@
 #include <CPU/VendorID.h>
 #include <Memory/Mem_.hpp>
 
-#include <stdint.h>
-
 namespace CPU {
     static char CPUModel[48];
 

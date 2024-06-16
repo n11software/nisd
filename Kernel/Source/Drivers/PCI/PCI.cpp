@@ -10,7 +10,7 @@
 #include <Drivers/PCI/PCI.h>
 #include <Drivers/Storage/NVMe/NVMe.h>
 #include <Inferno/Log.h>
-#include <stdint.h>
+#include <Inferno/stdint.h>
 
 namespace PCI {
 	uint16_t get_vendor_id(uint16_t bus, uint16_t dev, uint16_t func) {

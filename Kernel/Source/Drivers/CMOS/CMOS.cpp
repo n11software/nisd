@@ -6,7 +6,7 @@
 //
 //===================================================================//
 
-#include <sys/io.h>
+#include <Inferno/IO.h>
 #include <Drivers/CMOS/CMOS.h>
 
 unsigned char getRegister(int reg) {

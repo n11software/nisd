@@ -8,8 +8,8 @@
 
 #include <Drivers/PCI/PCI.h>
 #include <Inferno/Log.h>
-#include <sys/io.h>
-#include <stdint.h>
+#include <Inferno/IO.h>
+#include <Inferno/stdint.h>
 
 namespace PCI {
 uint16_t read_word(uint16_t bus, uint16_t slot, uint16_t func, uint16_t offset) {

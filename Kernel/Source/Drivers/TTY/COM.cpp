@@ -6,9 +6,9 @@
 //
 //===================================================================//
 
-#include <stdarg.h>
-#include <stdint.h>
-#include <sys/io.h>
+#include <Inferno/stdarg.h>
+#include <Inferno/stdint.h>
+#include <Inferno/IO.h>
 #include <Drivers/TTY/COM.h>
 
 #include <Inferno/Log.h>

@@ -7,7 +7,7 @@
 //===================================================================//
 
 #pragma once
-#include <sys/io.h>
+#include <Inferno/IO.h>
 #include <Drivers/Graphics/Framebuffer.h>
 
 void InitializeSerialDevice();

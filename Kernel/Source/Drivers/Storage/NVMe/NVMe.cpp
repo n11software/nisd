@@ -2,7 +2,7 @@
 #include <Drivers/PCI/PCI.h>
 #include <Inferno/Log.h>
 
-#include <stdint.h>
+#include <Inferno/stdint.h>
 
 int nvme_init(uint16_t vendor_id, uint16_t device_id) {
 	if (vendor_id == 0x1b36 && device_id == 0x0010) {

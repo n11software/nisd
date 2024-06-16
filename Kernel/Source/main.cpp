@@ -6,8 +6,8 @@
 //
 //===================================================================//
 
-#include <unistd.h>
-#include <stdint.h>
+#include <Inferno/unistd.h>
+#include <Inferno/stdint.h>
 
 #include <Boot/BOB.h>
 #include <Drivers/TTY/COM.h>

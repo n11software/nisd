@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <stdint.h>
+#include <Inferno/stdint.h>
 
 #include <Drivers/Storage/NVMe/NVMe.h>
 

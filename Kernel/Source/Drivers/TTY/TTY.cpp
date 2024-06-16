@@ -1,6 +1,6 @@
 #include <Drivers/TTY/TTY.h>
 #include <Memory/Mem_.hpp>
-#include <stdint.h>
+#include <Inferno/stdint.h>
 #include <Inferno/Log.h>
 // #define SSFN_CONSOLEBITMAP_TRUECOLOR
 // #include <ssfn.h>

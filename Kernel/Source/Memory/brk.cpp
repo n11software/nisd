@@ -6,9 +6,9 @@
 //
 //===================================================================//
 
-#include <unistd.h>
-#include <stdint.h>
-#include <errno.h>
+#include <Inferno/unistd.h>
+#include <Inferno/stdint.h>
+#include <Inferno/errno.h>
 
 #define __NR_brk 214
 
