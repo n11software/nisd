@@ -110,8 +110,6 @@ bootQEMU() {
     chmod +x meta/.run_qemu.sh
 
     ./meta/.run_qemu.sh
-    clear
-    main_menu
 }
 
 debugQEMU() {
@@ -180,8 +178,6 @@ debugQEMU() {
     chmod +x meta/run_qemu.sh
 
     ./meta/.run_qemu.sh
-    clear
-    main_menu
 }
 
 config_menu() {
