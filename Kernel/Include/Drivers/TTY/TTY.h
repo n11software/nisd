@@ -1,5 +1,5 @@
 #pragma once
-#include <Drivers/TTY/Framebuffer.h>
+#include <Drivers/Graphics/Framebuffer.h>
 
 void SetFramebuffer(Framebuffer* _fb);
 void SetFont(void* _font);

@@ -33,7 +33,7 @@ add_custom_command(TARGET bootx64.efi POST_BUILD
 	DEPENDS bootx64.efi
 )
 
-add_custom_target(srcboot
+add_custom_target(boot
 	COMMAND cp bootx64.efi ../Build/ISO/EFI/BOOT/bootx64.efi
 	DEPENDS bootx64.efi
 )

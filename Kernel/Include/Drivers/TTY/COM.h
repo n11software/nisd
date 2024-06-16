@@ -8,7 +8,7 @@
 
 #pragma once
 #include <sys/io.h>
-#include <Drivers/TTY/Framebuffer.h>
+#include <Drivers/Graphics/Framebuffer.h>
 
 void InitializeSerialDevice();
 char AwaitSerialResponse();
