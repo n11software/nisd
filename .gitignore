@@ -7,7 +7,7 @@ build/
 boot/
 kernel/
 lib/
-toolchain/src/
+toolchain/gnu/
 
 *.bin
 *.o
