@@ -2,6 +2,8 @@
 set -eo pipefail
 # This file will need to be run in bash, for now.
 
+# @(#)
+
 echo "Hydra Cross-Compiler/Toolchain Build Script"
 
 echo "Building to target: ${TARGET}"
@@ -72,9 +74,9 @@ pushd "$BUILD/"
 echo "XXX echo libc and libm headers"
     mkdir -p $BUILD/Root/usr/include/
     SRC_ROOT=$($REALPATH "$DIR"/..)
-    FILES=$(find "$SRC_ROOT"/Libraries/LibC/include "$SRC_ROOT"/Libraries/LibM -name '*.h' -print)
+    FILES=$(find "$SRC_ROOT"/lib/libc/include "$SRC_ROOT"/lib/libm -name '*.h' -print)
     for header in $FILES; do
-        target=$(echo "$header" | sed -e "s@$SRC_ROOT/Libraries/LibC/include@@" -e "s@$SRC_ROOT/Libraries/LibM@@")
+        target=$(echo "$header" | sed -e "s@$SRC_ROOT/lib/libc/include@@" -e "s@$SRC_ROOT/Libraries/LibM@@")
         buildstep "system_headers" $INSTALL -D "$header" "Root/usr/include/$target"
     done
     unset SRC_ROOT
@@ -84,12 +86,6 @@ popd
 buildstep dependencies echo "Checking whether 'make' is available..."
 if ! command -v ${MAKE:-make} >/dev/null; then
     buildstep dependencies echo "Please make sure to install GNU Make (for the '${MAKE:-make}' tool)."
-    exit 1
-fi
-
-buildstep dependencies echo "Checking whether 'patch' is available..."
-if ! command -v patch >/dev/null; then
-    buildstep dependencies echo "Please make sure to install GNU patch (for the 'patch' tool)."
     exit 1
 fi
 
@@ -115,87 +111,6 @@ PROGRAM
         fi
     done
 fi
-
-# === DOWNLOAD AND PATCH ===
-
-# check if the tarballs folder exists
-if [ ! -d "$DIR/Tarballs" ]; then
-    mkdir -p "$DIR/Tarballs"
-else
-    buildstep download echo "Tarballs folder exists."
-    buildstep download echo "Checking if tarballs are up-to-date..." # TODO: check if tarballs are up-to-date
-fi
-
-pushd "$DIR/Tarballs"
-
-    # === BINUTILS ===
-
-    BINUTILS_MD5=""
-
-    if [ -e "$BINUTILS_PKG" ]; then
-        md5="$($MD5SUM $BINUTILS_PKG | cut -f1 -d' ')"
-        echo "bu md5='$BINUTILS_MD5'"
-    fi
-    if [ ! -d "$DIR/Tarballs/$BINUTILS_PKG" ] ; then
-        if [ ! -e "$BINUTILS_PKG" ]; then
-            buildstep download echo "Downloading binutils..."
-            curl -LO "$BINUTILS_BASE_URL/$BINUTILS_PKG"
-        fi
-
-        if [ -d ${BINUTILS_NAME} ]; then
-            rm -rf "${BINUTILS_NAME}"
-            rm -rf "$DIR/Build/$ARCH/$BINUTILS_NAME"
-        fi
-    else
-        buildstep download echo "binutils already downloaded. Skipping download."
-    fi
-
-    buildstep download echo "Extracting binutils..."
-    tar -xvf "$BINUTILS_PKG"
-
-    pushd ${BINUTILS_NAME}
-    buildstep patching echo "Patching binutils..."
-    patch -p1 < "$PATCHPATH/binutils.patch"
-    popd
-
-    # === GCC ===
-
-    GCC_MD5=""
-
-    if [ -e "$GCC_PKG" ]; then
-        md5="$($MD5SUM ${GCC_PKG} | cut -f1 -d' ')"
-        echo "gc md5='$md5'"
-    fi
-    if [ ! -d "$DIR/Tarballs/$GCC_PKG" ] ; then
-        if [ ! -e "$GCC_PKG" ]; then
-            buildstep download echo "Downloading GCC..."
-            curl -LO "$GCC_BASE_URL/$GCC_NAME/$GCC_PKG"
-        fi
-        buildstep download echo "Extracting GCC..."
-        tar -xvf "$GCC_PKG"
-    else
-        buildstep download echo "GCC already downloaded. Skipping download."
-    fi
-
-    if [ -d ${GCC_NAME} ]; then
-        # Drop the previously patched extracted dir
-        rm -rf "${GCC_NAME}"
-        # Also drop the build dir
-        rm -rf "$DIR/Build/$ARCH/$GCC_NAME"
-    fi
-
-    echo "Extracting gcc..."
-    tar -xzf $GCC_PKG
-    pushd $GCC_NAME
-    patch -p1 < "$PATCHPATH/gcc.patch"
-    popd
-
-    if [ "$SYSTEM_NAME" = "Darwin" ]; then
-        pushd "gcc-${GCC_VERSION}"
-        ./contrib/download_prerequisites
-        popd
-    fi
-popd
 
 # === COMPILE AND INSTALL ===
 
@@ -227,12 +142,12 @@ pushd "$BUILD"
         popd
     fi
 
-    rm -rf binutils
-    mkdir -p binutils
+    rm -rf binutils-build
+    mkdir -p binutils-build
 
-    pushd binutils
+    pushd binutils-build
         echo "XXX configure binutils"
-        buildstep "binutils/configure" "$DIR"/Tarballs/$BINUTILS_NAME/configure --prefix="$PREFIX" \
+        buildstep "binutils/configure" "$DIR"/gnu/binutils/configure --prefix="$PREFIX" \
                                                  --target="$TARGET" \
                                                  --with-sysroot="$SYSROOT" \
                                                  --disable-nls \
@@ -260,12 +175,12 @@ pushd "$BUILD"
         cp "$DIR/Tarballs/gcc-$GCC_VERSION/gcc/config/hydra.h" "$DIR/Tarballs/gcc-$GCC_VERSION/gcc/config/hydra-kernel.h"
     fi
 
-    rm -rf gcc
-    mkdir -p gcc
+    rm -rf gcc-build
+    mkdir -p gcc-build
 
-    pushd gcc
+    pushd gcc-build
         echo "XXX configure gcc and libgcc"
-        buildstep "gcc/configure" "$DIR/Tarballs/gcc-$GCC_VERSION/configure" --prefix="$PREFIX" \
+        buildstep "gcc/configure" "$DIR/gnu/gcc/configure" --prefix="$PREFIX" \
                                             --target="$TARGET" \
                                             --with-sysroot="$SYSROOT" \
                                             --disable-nls \
@@ -307,4 +222,11 @@ pushd "$DIR"
         echo "Cache (after):"
         ls -l Cache
     fi
+popd
+
+# == INSTALL ==
+
+pushd "$DIR"
+	echo "Installing to ~/bin"
+	cp -r Local/x86_64/* ~/.
 popd
