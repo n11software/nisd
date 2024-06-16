@@ -2,6 +2,12 @@
 # subdirectories here. Add them in the ".gitignore" file
 # in that subdirectory instead.
 
+bin/
+boot/
+kernel/
+lib/
+toolchain/src/
+
 *.bin
 *.o
 *.so
