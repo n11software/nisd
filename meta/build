@@ -2,6 +2,8 @@
 
 # make this look better please for the love of god me - atl.
 
+IMPORT_CONFIG="./.nisd-sources"
+
 # Checks if the script is being run from the root repository or not.
 checkdir() {
 	scriptPath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -21,27 +23,14 @@ checkdir() {
 
 # Imports source trees from various git sources
 import() {
-	# TODO: make a release file in root that contains lists of what versions
-	# of each part you want to import.
-	ping -c 4 n11.dev # test ping n11.dev
+	source "$IMPORT_CONFIG"
 
-	if [ $? -ne 0 ]; then
-		echo "n11.dev is down. Cloning from GitHub."
-		# We're gonna assume you want the UTD version for now (see above comment)
-		git clone --depth=1 https://github.com/n11software/bob.git boot/
-		git clone --depth=1 https://github.com/n11software/inferno.git kernel/
-		git clone --depth=1 https://github.com/n11software/misc-lib.git lib/
-		git clone --depth=1 https://github.com/n11software/nlibc.git lib/libc/
-		git clone --depth=1 https://github.com/n11software/bin.git bin/
-		git clone --depth=1 https://github.com/n11software/gnu.git toolchain/gnu/
-	else
-		git clone --depth=1 git://n11.dev/nisd/bob.git boot/
-		git clone --depth=1 git://n11.dev/nisd/inferno.git kernel/
-		git clone --depth=1 git://n11.dev/nisd/misc-lib.git lib/
-		git clone --depth=1 git://n11.dev/nisd/dist/nlibc.git lib/libc/
-		git clone --depth=1 git://n11.dev/nisd/dist/bin.git bin/
-		git clone --depth=1 git://n11.dev/nisd/dist/gnu.git toolchain/gnu/
-	fi
+	git clone --depth $BOB_CLONE_DEPTH --branch $BOB_CLONE_TAG $BOB_CLONE_URL boot
+	git clone --depth $INFERNO_CLONE_DEPTH --branch $INFERNO_CLONE_TAG $INFERNO_CLONE_URL kernel/
+	git clone --depth $MISC_LIB_CLONE_DEPTH --branch $MISC_LIB_CLONE_TAG $MISC_LIB_CLONE_URL lib/
+	git clone --depth $NLIBC_CLONE_DEPTH --branch $NLIBC_CLONE_TAG $NLIBC_CLONE_URL lib/libc/
+	git clone --depth $BIN_CLONE_DEPTH --branch $BIN_CLONE_TAG $BIN_CLONE_URL bin/
+	git clone --depth $GNU_CLONE_DEPTH --branch $GNU_CLONE_TAG $GNU_CLONE_URL toolchain/gnu/
 }
 
 buildbootloader() {

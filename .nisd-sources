@@ -1,0 +1,29 @@
+# Bootloader
+BOB_CLONE_URL="git://n11.dev/nisd/bob.git"
+BOB_CLONE_DEPTH="1"
+BOB_CLONE_TAG="master"
+
+# Kernel
+INFERNO_CLONE_URL="git://n11.dev/nisd/inferno.git"
+INFERNO_CLONE_DEPTH="1"
+INFERNO_CLONE_TAG="master"
+
+# misc-lib
+MISC_LIB_CLONE_URL="git://n11.dev/nisd/misc-lib.git"
+MISC_LIB_CLONE_DEPTH="1"
+MISC_LIB_CLONE_TAG="master"
+
+# nlibc
+NLIBC_CLONE_URL="git://n11.dev/nisd/dist/nlibc.git"
+NLIBC_CLONE_DEPTH="1"
+NLIBC_CLONE_TAG="master"
+
+# bin
+BIN_CLONE_URL="git://n11.dev/nisd/dist/bin.git"
+BIN_CLONE_DEPTH="1"
+BIN_CLONE_TAG="master"
+
+# gnu (gcc/binutils)
+GNU_CLONE_URL="git://n11.dev/nisd/dist/gnu.git"
+GNU_CLONE_DEPTH="1"
+GNU_CLONE_TAG="gnu-1"

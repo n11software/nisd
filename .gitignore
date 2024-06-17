@@ -12,6 +12,8 @@ toolchain/
 
 dmesg
 
+.nisd-sources
+
 meta/.run_qemu.sh
 .qemu-config
 
