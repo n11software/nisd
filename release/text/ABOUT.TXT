@@ -1,0 +1,56 @@
+o About NISD:
+
+    NISD (N11/Inferno Software Distribution) is an operating system
+    built on top of the Inferno hybrid kernel for AMD64 based
+    hardware.  The project aims towards UNIX compilance.
+
+    NISD is project started by Ariston Lorenzo and Levi Frisleben
+    in 2018 as Hydra. In 2020, Hydra was renamed Echo and the Inferno
+    name was introduced for the kernel. In 2022, Echo, now renamed
+    to Hydra had a source code reset from scratch and is the origin
+    of most code in the distribution now. In 2024, Hydra was finally
+    renamed to NISD with Hydra being used as a codename.
+
+    NISD had a goal to learn how different components of a computer
+    and operating system interact as well as long how to create a
+    modern operating system.  We also had a goal of creating a system
+    as an alternative to other systems that could be used by the
+    normal person and can modify to their likings.
+
+    The release of NISD contains everything you need to run a system,
+    including full source code for everything.  With the source dist.
+    installed, you can recompile the entire system from scratch with
+    one command.  This makes it ideal for people who to understand
+    how the system works and how to contribute.
+
+    DISCLAIMER: While we try to do our best to safeguard you against
+    accidental loss of data, it's still more than possible to WIPE
+    OUT YOUR ENTIRE DISK with this.  Please do not use this system
+    unless you've backed up important data first! (or you just like
+    living on the edge.)
+
+o Contact info:
+
+    For general questions, please send email to:
+
+        hydra-inferno@googlegroups.com
+
+    Please know that if your questions aren't immediately answered,
+    we are volunteers and we have real-life schedules to deal with.
+    Questions which are well described (e.g. not "Help! It doesn't
+    work!") have a better chance of being answered.
+
+    Bug reports can also be sent to the above mailing list.
+
+o Credits:
+
+    from CONTRIB.N11:
+
+    The N11 Core Team:
+        Ariston Lorenzo (atl) <me@ariston.dev>
+        Levi Freisleben (fire) <levih@n11.dev>
+
+    Additional N11 Contributors (in no particular order):
+        Genesis Banzon (myst) <genesisbmyst@gmail.com>
+        Nola G (gingerwitch) <redpendrew@gmail.com>
+

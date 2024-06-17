@@ -1,0 +1,71 @@
+
+       _______  .___  _________________   
+       \      \ |   |/   _____/\______ \  
+       /   |   \|   |\_____  \  |    |  \ 
+      /    |    \   |/        \ |    `   \
+      \____|__  /___/_______  //_______  /
+              \/            \/         \/ 
+
+    -----------------------------------------
+            Build and Install NISD
+    -----------------------------------------
+    
+0.0        Preparing:
+           0.1   Prerequisites
+           0.2   Importing Sources
+           
+1.0        Building
+
+---
+
+0.0        Preparing
+===        =========
+
+This .TXT file documents the process on how to create a working
+installation of NISD on your machine.  This guide assumes you are
+working on a Linux host. If you aren't, we wish you best of luck.
+
+As of release 0.1-DEVELOPMENT, we don't recommend using real
+hardware unless you are testing and know what you are doing.
+There is no real support for this hardware so it's best you use
+this with an emulation software such as QEMU (see EMULATION.TXT)
+
+0.1        Prerequisites
+---        -------------
+
+- Ubuntu / Debian:
+    $ sudo apt install mtools xorriso qemu-system ovmf build-essential \
+    nasm bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo cmake \
+    ninja-build mingw-w64
+
+- Arch Linux / Manjaro:
+    $ sudo pacman -S --needed base-devel mtools libisoburn qemu \
+    qemu-arch-extra qemu-utils edk2-ovmf nasm gmp libmpc mpfr cmake \
+    ninja
+          
+0.2        Importing Sources
+---        -----------------
+
+You can use the 'meta/build' script to import the sources of
+each part of NISD. Make sure to edit '.nisd-sources' according
+to your needs.
+
+	$ vi .nisd-sources
+	...
+	GNU_CLONE_URL="# Git Repository URL"
+	GNU_CLONE_DEPTH="# Git clone depth"
+	GNU_CLONE_TAG="# Git release tag (or master)"
+	:wq
+	$ meta/build import
+	
+1.0        Building
+===        ========
+
+To build the whole NISD system, use the 'meta/build' script 
+with the 'universe' target which builds every component of
+NISD:
+
+	$ meta/build universe
+	
+This also generates an ISO file in build/ which you can mount
+on a removable drive or boot using a VM.

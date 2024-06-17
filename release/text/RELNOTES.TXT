@@ -1,0 +1,53 @@
+
+       _______  .___  _________________   
+       \      \ |   |/   _____/\______ \  
+       /   |   \|   |\_____  \  |    |  \ 
+      /    |    \   |/        \ |    `   \
+      \____|__  /___/_______  //_______  /
+              \/            \/         \/ 
+
+   ------------------------------------------
+      RELEASE NOTES - NISD 0.1-DEVELOPMENT
+   ------------------------------------------
+
+1. What's new since N/A
+=======================
+
+Literally everything.
+
+2. Supported Configurations
+===========================
+
+Here's a list of peripherals that are currently known
+to work with NISD.
+
+2.1. CPUs
+---------
+
+AMD EPYC
+Intel Core Broadwell
+Intel Core 2 Duo
+Intel Xeon Saphhire Rapids
+QEMU Virtual CPU
+
+2.2. Graphics
+-------------
+
+QEMU Standard Graphics Card
+General VGA Out
+
+3. Getting NISD
+===============
+
+You can obtain NISD in multiple ways:
+
+3.1. FTP
+--------
+
+You can ftp NISD and various other packages from `ftp.n11.dev`.
+
+3.2. Git
+--------
+
+Git hosts all NISD source trees and official repositories are
+found at n11.dev and github.com/n11software.
