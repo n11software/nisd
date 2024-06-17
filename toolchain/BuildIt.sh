@@ -171,8 +171,8 @@ pushd "$BUILD"
         perl -pi -e 's/-no-pie/-nopie/g' "$DIR/Tarballs/gcc-$GCC_VERSION/gcc/configure"
     fi
 
-    if [ ! -f "$DIR/Tarballs/gcc-$GCC_VERSION/gcc/config/hydra-userland.h" ]; then
-        cp "$DIR/Tarballs/gcc-$GCC_VERSION/gcc/config/hydra.h" "$DIR/Tarballs/gcc-$GCC_VERSION/gcc/config/hydra-kernel.h"
+    if [ ! -f "$DIR/gnu/gcc/gcc/config/hydra-userland.h" ]; then
+        cp "$DIR/gnu/gcc-$GCC/gcc/config/hydra.h" "$DIR/gnu/gcc/gcc/config/hydra-kernel.h"
     fi
 
     rm -rf gcc-build
