@@ -61,8 +61,8 @@ bootQEMU() {
 
     # Required options
     cmd+=" -drive format=raw,file=build/nisd.iso"
-    cmd+=" -drive if=pflash,format=raw,unit=0,file=share/res/ovmf/OVMF_CODE.fd,readonly=on"
-    cmd+=" -drive if=pflash,format=raw,unit=1,file=share/res/ovmf/OVMF_VARS.fd"
+    cmd+=" -drive if=pflash,format=raw,unit=0,file=share/ovmf/OVMF_CODE.fd,readonly=on"
+    cmd+=" -drive if=pflash,format=raw,unit=1,file=share/ovmf/OVMF_VARS.fd"
 
     # Add optional configurations if they are set
     if [[ -n $QEMU_CONFIG_MACHINE ]]; then
