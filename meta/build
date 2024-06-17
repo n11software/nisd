@@ -65,7 +65,7 @@ setupiso() {
 	echo "Setting up ISO file tree."
 	mkdir -p build/iso/EFI/BOOT
 	echo "Copying resources..."
-	cp res/* build/iso/.
+	cp share/res/* build/iso/.
 	bootloader="boot/build/bootx64.efi"
 	if [ ! -f "$bootloader" ]; then
 		cleanbootloader
@@ -100,7 +100,7 @@ buildiso() {
 world() {
 	# Builds everything outside of the kernel and bootloader
 	# TODO: add nlibc and other binaries
-	buildiso()	
+	buildiso	
 }
 
 universe() {
@@ -124,7 +124,7 @@ case "$1" in
 		echo "  import - Import sources based on .nisd-sources"
 		echo "  bootloader - Build the bootloader"
 		echo "  cleanbootloader - Cleans the bootloader build"
-		echo "  kernel - Build the kernel
+		echo "  kernel - Build the kernel"
 		echo "  cleankernel - Cleans the kernel build"
 		echo "  iso - Builds an iso"
 		echo "  universe - Builds everything"
