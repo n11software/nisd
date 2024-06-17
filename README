@@ -1,21 +1,32 @@
-N11/Inferno source tree
+NISD (N11/Inferno Software Distribution) source directory.
 
-This is the top level of the N11/Inferno source tree depot.
-
-For basic information on N11/Inferno, see Documentation/UserGuide/README
-first.
+This is the top level of the NISD source directory.
 
 For copyright information, please see the file COPYRIGHT in this
 directory. For contact and maintainer information, see CREDITS and
 MAINTAINERS.
 
-Depot Roadmap:
+The 'meta/build' script provides a number of targets for building
+components of NISD, including the kernel and bootloader, as well as
+generating disc files for virtual emulation.  See build(7) as well
+as release/texts/INSTALL.TXT for build instructions.
 
-| Projects       | Description       |
-|----------------|-------------------|
-| Programs       | User programs     |
-| Boot           | Bootloader source |
-| Documentation  | Documentation     |
-| Kernel         | Inferno source    |
-| Libraries      | User libraries    |
-| Toolchain      | Toolchain scripts |
+The 'meta/run' script provides QEMU virtualization configuration
+as well as starting QEMU with your configuration. See run(7) as
+well as release/texts/EMULATE.TXT for more information.
+
+Source Roadmap:
+---------------
+bin             System and User commands (imported from bin.git)
+
+boot            The Better Opensource Bootloader (imported from bob.git)
+
+build           Build directory (used by meta/build buildiso)
+
+kernel          Inferno kernel sources (imported from inferno.git)
+
+lib             System libraries (imported from nlibc.git and misc-lib.git)
+
+share           Shared resources
+
+toolchain       Toolchain scripts and sources (imported from gnu.git)
