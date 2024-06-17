@@ -172,7 +172,7 @@ pushd "$BUILD"
     fi
 
     if [ ! -f "$DIR/gnu/gcc/gcc/config/hydra-userland.h" ]; then
-        cp "$DIR/gnu/gcc-$GCC/gcc/config/hydra.h" "$DIR/gnu/gcc/gcc/config/hydra-kernel.h"
+        cp "$DIR/gnu/gcc/gcc/config/hydra.h" "$DIR/gnu/gcc/gcc/config/hydra-kernel.h"
     fi
 
     rm -rf gcc-build
