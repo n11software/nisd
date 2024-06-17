@@ -18,7 +18,7 @@ main_menu() {
         echo -e "1. Boot"
         echo -e "2. Configure QEMU emulation"
         echo -e "3. Boot and Debug"
-        echo -e "4. Quit"
+        echo -e "q. Quit"
         echo -e "${COLOR_TITLE}====== NISD QEMU VM ======${COLOR_DEFAULT}"
         read -p "Enter your choice: " choice
         echo ""
@@ -33,7 +33,7 @@ main_menu() {
             3)
                 debugQEMU
                 ;;
-            4)
+            q)
                 clear
                 exit 0
                 ;;
@@ -523,5 +523,12 @@ select_display() {
     echo -e "${COLOR_PROMPT}Display set to $QEMU_CONFIG_DISPLAY.${COLOR_DEFAULT}"
 }
 
-main_menu
-
+case "$1" in
+	menu) main_menu ;;
+	menuconfig) config_menu ;;
+	boot) bootQEMU ;;
+	debug) debugQEMU ;;
+	*)
+		main_menu
+		;;
+esac
