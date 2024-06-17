@@ -97,15 +97,37 @@ buildiso() {
 	xorriso -as mkisofs -R -f -e nisd.img -no-emul-boot -V "NISD" -o build/nisd.iso build/iso/ > /dev/null 2>&1
 }
 
+world() {
+	# Builds everything outside of the kernel and bootloader
+	# TODO: add nlibc and other binaries
+	buildiso()	
+}
+
+universe() {
+	# Builds everything
+	buildbootloader
+	buildkernel
+	world
+}
+
 case "$1" in
 	import) import ;;
-	buildbootloader) buildbootloader ;;
+	bootloader) buildbootloader ;;
 	cleanbootloader) cleanbootloader ;;
-	buildkernel) buildkernel ;;
+	kernel) buildkernel ;;
 	cleankernel) cleankernel ;;
-	buildiso) buildiso ;;
+	iso) buildiso ;;
+	universe) universe ;;
 	*)
-		echo "Usage: meta/build {}"
+		echo "Usage: meta/build {target}"
+		echo "Supported TARGETS:"
+		echo "  import - Import sources based on .nisd-sources"
+		echo "  bootloader - Build the bootloader"
+		echo "  cleanbootloader - Cleans the bootloader build"
+		echo "  kernel - Build the kernel
+		echo "  cleankernel - Cleans the kernel build"
+		echo "  iso - Builds an iso"
+		echo "  universe - Builds everything"
 		exit 1
 		;;
 esac
