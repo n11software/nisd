@@ -31,6 +31,7 @@ import() {
 	git clone --depth $NLIBC_CLONE_DEPTH --branch $NLIBC_CLONE_TAG $NLIBC_CLONE_URL lib/libc/
 	git clone --depth $BIN_CLONE_DEPTH --branch $BIN_CLONE_TAG $BIN_CLONE_URL bin/
 	git clone --depth $GNU_CLONE_DEPTH --branch $GNU_CLONE_TAG $GNU_CLONE_URL toolchain/gnu/
+	git clone --depth $BASH_CLONE_DEPTH --branch $BASH_CLONE_TAG $BASH_CLONE_URL bin/usr.bin/bash
 }
 
 buildbootloader() {

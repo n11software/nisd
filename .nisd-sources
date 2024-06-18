@@ -27,3 +27,8 @@ BIN_CLONE_TAG="master"
 GNU_CLONE_URL="git://n11.dev/nisd/dist/gnu.git"
 GNU_CLONE_DEPTH="1"
 GNU_CLONE_TAG="gnu-1"
+
+# bash
+BASH_CLONE_URL="git://n11.dev/nisd/dist/bash.git"
+BASH_CLONE_DEPTH="1"
+BASH_CLONE_TAG="nisd-bash-5.0"
