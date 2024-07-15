@@ -1,0 +1,54 @@
+[2J[01;01H[=3h[2J[01;01H[0m[35m[40m[0m[37m[40mBdsDxe: failed to load Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0): Not Found
+BdsDxe: loading Boot0002 "UEFI QEMU HARDDISK QM00001 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x0,0xFFFF,0x0)
+BdsDxe: starting Boot0002 "UEFI QEMU HARDDISK QM00001 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x0,0xFFFF,0x0)
+[2J[01;01H[INFO] kernel: serial device initalized
+[INFO] kernel: Inferno kernel version 0.1alpha
+Copyright 2021-2024 N11 Software.
+Copyright 2018-2021 Ariston Lorenzo and Levi Hicks. All rights reserved.
+See COPYRIGHT in the Inferno source tree for more information.
+[INFO] rtc: 14/7/2024T7:41:2
+[INFO] rtc: rtc initialized
+[INFO] cpu: CPU0: Origin=GenuineIntel  Id=0x  Family=0x  Model=0x  Stepping=1787
+[INFO] cpu: CPU0: Intel(R) Core(TM)2 Duo CPU     T7700  @ 2.40GHz
+[INFO] idt: initialized IDT
+Init Memory
+Done
+InfernoStart: 0
+InfernoEnd: 9088
+PhysicalMemoryManager initialized with 131488 total pages
+Locked page index: 0
+Locked page index: 1
+Locked page index: 2
+Locked page index: 3
+Locked page index: 4
+Locked page index: 5
+Locked page index: 6
+Locked page index: 7
+Locked page index: 8
+Locked page index: 9
+Page tables allocated
+PML4: 0xa000, PDPT: 0xb000, PD: 0xc000, PT: 0xd000
+Paging structures set up
+Mapped phys 0xa000 to virt 0xa000
+Mapped phys 0xb000 to virt 0xb000
+Mapped phys 0xc000 to virt 0xc000
+Mapped phys 0xd000 to virt 0xd000
+Mapped phys 0x0 to virt 0x0
+Mapped phys 0x1000 to virt 0x1000
+Mapped phys 0x2000 to virt 0x2000
+Mapped phys 0x3000 to virt 0x3000
+Mapped phys 0x4000 to virt 0x4000
+Mapped phys 0x5000 to virt 0x5000
+Mapped phys 0x6000 to virt 0x6000
+Mapped phys 0x7000 to virt 0x7000
+Mapped phys 0x8000 to virt 0x8000
+Mapped phys 0x9000 to virt 0x9000
+Mapped phys 0xa000 to virt 0xa000
+Enabling PageTable
+Initial CR0: 0x80010033
+Initial CR4: 0x668
+Modified CR0: 0x80010033
+Modified CR4: 0x668
+Paging enabled
+Loading PageTable
+Loading paging with PML4 address: 0xa000
