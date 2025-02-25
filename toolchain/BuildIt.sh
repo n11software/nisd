@@ -229,4 +229,8 @@ popd
 pushd "$DIR"
 	echo "Installing to ~/bin"
 	cp -r Local/x86_64/* ~/.
+	echo "Adding ~/bin to PATH"
+	echo "export PATH=~/bin:\$PATH" >> ~/.bashrc
+	echo "export PATH=~/bin:\$PATH" >> ~/.zshrc
+	echo "export PATH=~/bin:\$PATH" >> ~/.profile
 popd
