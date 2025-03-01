@@ -9,7 +9,7 @@ descriptions.
 [ ] - Incomplete
 [@] - Abandoned
 
-- Programs (can be done on their own time)
+- can be done on their own time
 
 	Task				Urgency		Grade		Assignees		ID
 -------------------------------------------------------------------------------
@@ -17,19 +17,20 @@ descriptions.
 [ ] nmake				N/A						<atl+lsh>		2
 [ ] neon				High		Advanced	<atl+lsh>		3
 [ ] shell				N/A						<atl+lsh>		4
+[ ] ARM support
 
 - Milestone 1 (v0.1pre1)
 
 	Task				Urgency		Grade		Assignees		ID
 -------------------------------------------------------------------------------
-[ ] BOB - Bootloader	High		Advanced	<levih>			1
+[x] BOB - Bootloader	High		Advanced	<levih>			1
 [x] GDT/IDT										<levih>			2
 [x] Basic LibC			High		Low			<atl>		    3
 [x] kprintf function	High		Medium		<levih>			4
 [x] Serial support		High		Low			<levih>			5
 [ ] Multitasking								<?>				6
-[x] Paging MM									<lsh>				7
-[x] Virtual MM									<lsh>				8
+[ ] Paging MM									<lsh>				7
+[?] Virtual MM									<lsh>				8
 [ ] APIC										<?>				9
 [x] CMOS/RTC			Medium		Medium		<atl>		    10
 [x] Syscalls 									<levih>			11
@@ -41,7 +42,7 @@ descriptions.
 
 	Task				Urgency		Grade		Assignees		ID
 -------------------------------------------------------------------------------
-[ ] Toolchain			High		Medium		<atl>		    15
+[x] Toolchain			High		Medium		<atl>		    15
 [ ] Syscalls									<?>				16
 [ ] Keyboard/Mouse		High					<?>				17
 [ ] ext2 Filesystem		High		High		<atl>		    18
@@ -51,6 +52,15 @@ descriptions.
 [ ] ACPI (for shutdown) High					<?>				22
 
 -------------------------------------------------------------------------------
+
+- Milestone 3 (v0.1pre3)
+
+    Task                     Urgency     Grade     Assignees               ID
+-------------------------------------------------------------------------------
+[ ] USB Support                                    <atl>                   23
+[ ] Proper graphics drivers                        <levih>                 24
+
+---
 
 #21 - FS Hierarchy
     
@@ -63,3 +73,8 @@ descriptions.
     
 		Signed-off-by: Ariston Lorenzo <me@ariston.dev>
 
+#24 - Proper graphics drivers
+
+		tbd
+
+		@levih
