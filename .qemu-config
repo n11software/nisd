@@ -1,7 +1,7 @@
 QEMU_CONFIG_MACHINE="q35"
-QEMU_CONFIG_CPU="core2duo"
-QEMU_CONFIG_RAM="4G"
-QEMU_CONFIG_HDD=
+QEMU_CONFIG_CPU="qemu64"
+QEMU_CONFIG_RAM="1G"
+QEMU_CONFIG_HDD="sata.qcow2,if=none,id=nvme0 -device nvme,drive=nvme0,serial=deadbeef"
 QEMU_CONFIG_OPT=
 QEMU_CONFIG_GRAPHICS=
 QEMU_CONFIG_PCI="no"
