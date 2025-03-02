@@ -115,6 +115,7 @@ buildiso() {
 	mcopy -i build/iso/nisd.img build/iso/kernel ::
 	mcopy -i build/iso/nisd.img build/iso/startup.nsh ::
 	mcopy -i build/iso/nisd.img build/iso/FreeSans.sfn ::
+	mcopy -i build/iso/nisd.img build/iso/test ::
 	xorriso -as mkisofs -R -f -e nisd.img -no-emul-boot -V "NISD" -o build/nisd.iso build/iso/ > /dev/null 2>&1
 }
 
