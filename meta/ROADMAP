@@ -29,9 +29,9 @@ descriptions.
 [x] kprintf function	High		Medium		<levih>			4
 [x] Serial support		High		Low			<levih>			5
 [ ] Multitasking								<?>				6
-[ ] Paging MM									<lsh>				7
+[x] Paging MM									<lsh>				7
 [?] Virtual MM									<lsh>				8
-[ ] APIC										<?>				9
+[x] APIC										<?>				9
 [x] CMOS/RTC			Medium		Medium		<atl>		    10
 [x] Syscalls 									<levih>			11
 [x] Basic Video Driver	High		High		<levih>			12
@@ -43,13 +43,13 @@ descriptions.
 	Task				Urgency		Grade		Assignees		ID
 -------------------------------------------------------------------------------
 [x] Toolchain			High		Medium		<atl>		    15
-[ ] Syscalls									<?>				16
+[x] Syscalls									<?>				16
 [ ] Keyboard/Mouse		High					<?>				17
 [ ] ext2 Filesystem		High		High		<atl>		    18
 [ ] Epoch Time			High		Low			<atl>		    19
 [ ] Bash				High		High		<?>				20
-[ ] FS Hierarchy		High		Low			<atl+lsh>		21
-[ ] ACPI (for shutdown) High					<?>				22
+[x] FS Hierarchy		High		Low			<atl+lsh>		21
+[x] ACPI (for shutdown) High					<?>				22
 
 -------------------------------------------------------------------------------
 
