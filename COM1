@@ -1,0 +1,90 @@
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01H[2J[01;01H[32m[INFO][0m kernel: serial device initalized
+200000
+[32m[INFO][0m memory: allocated page 0x402000 (used=774/16777216)
+[32m[INFO][0m paging: Mapped 2MB region at 0x400000
+[32m[INFO][0m memory: allocated page 0x403000 (used=775/16777216)
+[32m[INFO][0m paging: Mapped 2MB region at 0x600000
+[32m[INFO][0m memory: allocated page 0x404000 (used=776/16777216)
+[32m[INFO][0m paging: Mapped 2MB region at 0x800000
+[32m[INFO][0m memory: allocated page 0x405000 (used=777/16777216)
+[32m[INFO][0m paging: Mapped 2MB region at 0xa00000
+[32m[INFO][0m memory: allocated page 0x406000 (used=778/16777216)
+[32m[INFO][0m paging: Mapped 2MB region at 0xc00000
+[32m[INFO][0m memory: allocated page 0x407000 (used=779/16777216)
+[32m[INFO][0m paging: Mapped 2MB region at 0xe00000
+[32m[INFO][0m paging: Identity mapping kernel 0x100000 - 0x10f000
+[32m[INFO][0m memory: allocated page 0x408000 (used=780/16777216)
+[32m[INFO][0m memory: allocated page 0x409000 (used=781/16777216)
+[32m[INFO][0m paging: Mapped current stack region around 0x7f100000
+[32m[INFO][0m paging: Page tables initialized
+[32m[INFO][0m paging: Mapping framebuffer at 0xe0000000, size: 0x300000
+[32m[INFO][0m paging: Mapping test page: virtual 0x1400000 -> physical 0x1000000
+[32m[INFO][0m kernel: Preparing to enable paging, current code at 
+[32m[INFO][0m kernel: Enabling paging...
+[32m[INFO][0m paging: Loading page tables from 0x300000
+[32m[INFO][0m paging: Successfully loaded new page tables
+[32m[INFO][0m paging: Paging verified as enabled
+[32m[INFO][0m kernel: Paging successfully enabled
+[32m[INFO][0m paging: Virtual memory test passed: wrote and read 0xDEADBEEF at 0x1400000
+[32m[INFO][0m paging: Virtual 0x1400000 resolves to physical 0x1400000
+[32m[INFO][0m paging: Unmapped test page at 0x1400000
+[32m[INFO][0m heap: Initialized at 0x4000000, size: 0x100000
+[32m[INFO][0m kernel: Testing heap allocator...
+[32m[INFO][0m heap: Allocated blocks at: 0x4000018, 0x4000430, 0x4000c48
+[32m[INFO][0m heap: Reallocated block at: 0x4000430
+[32m[INFO][0m heap: Merged allocation at: 0x4000430
+[32m[INFO][0m idt: initialized IDT
+[32m[INFO][0m apic: Disabling legacy PIC...
+[32m[INFO][0m apic: Legacy PIC disabled
+[35m[DEBUG][0m apic: Enabling APIC in MSR
+[35m[DEBUG][0m apic: Writing to MSR
+[35m[DEBUG][0m apic: Setup LOAPIC
+[35m[DEBUG][0m apic: Setup SIPs
+[32m[INFO][0m apic: APIC initialized successfully
+[32m[INFO][0m kernel: APIC initialized successfully
+[32m[INFO][0m apic: APIC Version: 0x80
+[32m[INFO][0m PCI: PCI Initialized
+[32m[INFO][0m PCI: Using configuration mode 1 by default
+[35m[DEBUG][0m PCI: Detected device: 80ee:beef (Class 3, Subclass 0)
+[35m[DEBUG][0m PCI: Detected device: 1022:2000 (Class 2, Subclass 0)
+[35m[DEBUG][0m PCI: Detected device: 80ee:cafe (Class 8, Subclass 128)
+[35m[DEBUG][0m PCI: Detected device: 8086:2415 (Class 4, Subclass 1)
+[35m[DEBUG][0m PCI: Detected device: 8086:7113 (Class 6, Subclass 128)
+[35m[DEBUG][0m PCI: Detected device: 8086:27b9 (Class 6, Subclass 1)
+[32m[INFO][0m kernel: initalized GDT
+[32m[INFO][0m kernel: Done!
+[32m[INFO][0m kernel: Boot time: -2s
+[32m[INFO][0m syscall: Syscall number: 12 (args: 0x0, 0xffffffff, 0x2, 0x1dc, 0x2, 0xffffffff)
+[32m[INFO][0m syscall: brk(0x0)
+[32m[INFO][0m kernel: Current break: 0xc
+[32m[INFO][0m syscall: Syscall number: 12 (args: 0x200c, 0xffffffff, 0x2, 0x220, 0x2, 0xffffffff)
+[32m[INFO][0m syscall: brk(0x200c)
+[32m[INFO][0m kernel: Set break to: 0x200c
+[32m[INFO][0m syscall: Syscall number: 9 (args: 0x0, 0x2000, 0x3, 0x22, 0xffffffff, 0x0)
+[32m[INFO][0m syscall: mmap(addr=0x0, len=8192, prot=0x3, flags=0x22, fd=-1, offset=0x0)
+[32m[INFO][0m memory: allocated page 0x40a000 (used=782/16777216)
+[32m[INFO][0m memory: allocated page 0x40b000 (used=783/16777216)
+[32m[INFO][0m kernel: mmap returned: 0x9
+[32m[INFO][0m kernel: memcmp result1: 0
+[32m[INFO][0m kernel: memcmp result2: 14
+[32m[INFO][0m kernel: Starting simplified VM aliasing test
+[32m[INFO][0m vm_alias: Running simplified VM aliasing test
+[32m[INFO][0m memory: allocated page 0x40c000 (used=784/16777216)
+[32m[INFO][0m vm_alias: Allocated test page at physical address 0x40c000
+[32m[INFO][0m vm_alias: Wrote 0xDEADBEEF directly to physical memory at 0x40c000
+[32m[INFO][0m vm_alias: Direct read from physical memory: 0xdeadbeef
+[32m[INFO][0m vm_alias: Read 0xdeadbeef through identity mapping at 0x40c000
+[32m[INFO][0m vm_alias: Identity mapping works correctly!
+[32m[INFO][0m vm_alias: After writing 0xCAFEBABE to identity mapping, direct read: 0xcafebabe
+[32m[INFO][0m vm_alias: SUCCESS: Virtual memory aliasing confirmed!
+[32m[INFO][0m kernel: Virtual memory aliasing test PASSED
+[32m[INFO][0m kernel: Initializing ACPI for system shutdown...
+[32m[INFO][0m acpi: Initializing ACPI...
+[32m[INFO][0m acpi: Found FACP at 0x7ed79000
+[32m[INFO][0m acpi: Writing ACPI_ENABLE to SMI_CMD
+[32m[INFO][0m acpi: ACPI enabled successfully
+[32m[INFO][0m acpi: ACPI initialization successful
+[32m[INFO][0m hpet: HPET initialized, period: 69841279 fs
+[32m[INFO][0m hpet: HPET enabled
+[32m[INFO][0m kernel: Waiting 2 minutes before shutdown...
+

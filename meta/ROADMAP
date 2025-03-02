@@ -30,7 +30,7 @@ descriptions.
 [x] Serial support		High		Low			<levih>			5
 [ ] Multitasking								<?>				6
 [x] Paging MM									<lsh>				7
-[?] Virtual MM									<lsh>				8
+[x] Virtual MM									<lsh>				8
 [x] APIC										<?>				9
 [x] CMOS/RTC			Medium		Medium		<atl>		    10
 [x] Syscalls 									<levih>			11
