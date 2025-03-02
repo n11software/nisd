@@ -9,6 +9,7 @@ kernel/
 lib/
 toolchain/gnu/
 toolchain/
+sysroot/
 
 dmesg
 

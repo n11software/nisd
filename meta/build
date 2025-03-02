@@ -62,6 +62,26 @@ cleankernel() {
 	cd ../
 }
 
+buildnlibc() {
+	cd lib/libc/
+	mkdir -p build && cd build
+	cmake -GNinja ..
+	ninja
+	cd ../../../
+}
+
+installnlibc() {
+	buildsysroottree
+	cp -r lib/libc/include/* sysroot/usr/include/.
+	cp -r lib/libc/build/libC.a sysroot/lib/libc.a
+}
+
+cleannlibc() {
+	cd lib/libc/
+	rm -rf build && mkdir build
+	cd ../../
+}
+
 setupiso() {
 	echo "Setting up ISO file tree."
 	mkdir -p build/iso/EFI/BOOT
@@ -98,10 +118,32 @@ buildiso() {
 	xorriso -as mkisofs -R -f -e nisd.img -no-emul-boot -V "NISD" -o build/nisd.iso build/iso/ > /dev/null 2>&1
 }
 
+buildsysroottree() {
+	mkdir -p sysroot
+	mkdir -p sysroot/bin
+	mkdir -p sysroot/etc
+	mkdir -p sysroot/dev
+	mkdir -p sysroot/lib
+	mkdir -p sysroot/tmp
+	mkdir -p sysroot/usr/bin
+	mkdir -p sysroot/usr/lib
+	mkdir -p sysroot/usr/include
+	mkdir -p sysroot/usr/src
+	mkdir -p sysroot/usr/n11
+	touch sysroot/usr/n11/README
+	echo "This is the default N11 user of NISD.\n" >> sysroot/usr/n11/README
+	mkdir -p sysroot/sbin
+	mkdir -p sysroot/mnt
+	mkdir -p sysroot/var
+}
+
 world() {
 	# Builds everything outside of the kernel and bootloader
 	# TODO: add nlibc and other binaries
-	buildiso	
+	buildsysroottree
+	buildnlibc
+	installnlibc
+	buildiso
 }
 
 universe() {
@@ -119,6 +161,7 @@ case "$1" in
 	cleankernel) cleankernel ;;
 	iso) buildiso ;;
 	universe) universe ;;
+	world) world ;;
 	*)
 		echo "Usage: meta/build {target}"
 		echo "Supported TARGETS:"
