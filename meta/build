@@ -73,7 +73,7 @@ buildnlibc() {
 installnlibc() {
 	buildsysroottree
 	cp -r lib/libc/include/* sysroot/usr/include/.
-	cp -r lib/libc/build/libC.a sysroot/lib/libc.a
+	cp -r lib/libc/build/libc.a sysroot/lib/libc.a
 }
 
 cleannlibc() {
