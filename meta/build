@@ -138,12 +138,44 @@ buildsysroottree() {
 	mkdir -p sysroot/var
 }
 
+create_ext2_image() {
+    local image_file="build/sysroot.img"
+    local sysroot_dir="sysroot"
+    local image_size=64M  # Adjust size as needed
+
+    echo "Creating ext2 image of sysroot folder..."
+
+    # Create an empty file of the specified size
+    dd if=/dev/zero of=$image_file bs=1M count=64
+
+    # Format the file as ext2
+    mkfs.ext2 -F $image_file
+
+    # Create a temporary mount point
+    local mount_point=$(mktemp -d)
+
+    # Mount the image
+    sudo mount -o loop $image_file $mount_point
+
+    # Copy the contents of the sysroot folder to the image
+    sudo cp -r $sysroot_dir/* $mount_point/
+
+    # Unmount the image
+    sudo umount $mount_point
+
+    # Remove the temporary mount point
+    rmdir $mount_point
+
+    echo "ext2 image created at $image_file"
+}
+
 world() {
 	# Builds everything outside of the kernel and bootloader
 	# TODO: add nlibc and other binaries
 	buildsysroottree
 	buildnlibc
 	installnlibc
+	create_ext2_image  # Create the ext2 image as part of the world build
 	buildiso
 }
 

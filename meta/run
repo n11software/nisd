@@ -58,12 +58,18 @@ bootQEMU() {
     local serial_option=""
     local chardev_option=""
     local display_option=""
+    local sata_option=""
 
     # Required options
     cmd+=" -drive format=raw,file=build/nisd.iso"
     cmd+=" -drive if=pflash,format=raw,unit=0,file=share/ovmf/OVMF_CODE.fd,readonly=on"
     cmd+=" -drive if=pflash,format=raw,unit=1,file=share/ovmf/OVMF_VARS.fd"
-	cmd+=" -machine acpi=on"
+    cmd+=" -machine acpi=on"
+    cmd+=" -device i8042"
+    cmd+=" -device ahci,id=ahci0"  # Add AHCI controller
+    cmd+=" -drive id=disk1,if=none,format=raw,file=build/sysroot.img"  # Define the sysroot image
+    cmd+=" -device ide-hd,drive=disk1,bus=ahci0.0"  # Attach the sysroot image to the AHCI controller
+
     # Add optional configurations if they are set
     if [[ -n $QEMU_CONFIG_MACHINE ]]; then
         machine_option="-machine $QEMU_CONFIG_MACHINE"
