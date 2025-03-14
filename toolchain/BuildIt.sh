@@ -80,12 +80,12 @@ echo "XXX echo libc and libm headers"
         buildstep "system_headers" $INSTALL -D "$header" "Root/usr/include/$target"
     done
     OBJ_FILES=$(find "$SRC_ROOT"/lib/libc/build -name '*.o' -print)
-    for object in $FILES; do
+    for object in $OBJ_FILES; do
 	    obj_target=$(echo "$object" | sed -e "s@$SRC_ROOT/lib/libc/build@@")
 	    buildstep "system_libraries" $INSTALL -D "$object" "Root/usr/lib/$obj_target"
     done
     LIB_FILES=$(find "$SRC_ROOT"/lib/libc/build -name '*.a' -print)
-    for library in $FILES; do
+    for library in $LIB_FILES; do
 	    lib_target=$(echo "$library" | sed -e "s@$SRC_ROOT/lib/libc/build@@")
 	    buildstep "system_libraries" $INSTALL -D "$library" "Root/usr/lib/$lib_target"
     done
