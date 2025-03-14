@@ -88,6 +88,7 @@ echo "XXX echo libc and libm headers"
     for library in $FILES; do
 	    lib_target=$(echo "$library" | sed -e "s@$SRC_ROOT/lib/libc/build@@")
 	    buildstep "system_libraries" $INSTALL -D "$library" "Root/usr/lib/$lib_target"
+    done
     unset SRC_ROOT
 popd
 
