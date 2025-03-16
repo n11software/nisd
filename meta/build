@@ -200,6 +200,17 @@ resetall() {
 	git restore .
 }
 
+pullall() {
+	git pull
+	cd boot
+	git pull
+	cd ../bin
+	git pull
+	cd ../kernel
+	git pull
+	cd ../lib/libc
+}
+
 case "$1" in
 	import) import ;;
 	bootloader) buildbootloader ;;
@@ -211,6 +222,7 @@ case "$1" in
 	world) world ;;
 	toolchain) buildtoolchain ;;
 	reset) resetall ;;
+	pull) pullall ;;
 	*)
 		echo "Usage: meta/build {target}"
 		echo "Supported TARGETS:"
