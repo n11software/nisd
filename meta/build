@@ -82,6 +82,11 @@ cleannlibc() {
 	cd ../../
 }
 
+buildtoolchain() {
+	cd toolchain
+	./BuildIt.sh
+}
+
 setupiso() {
 	echo "Setting up ISO file tree."
 	mkdir -p build/iso/EFI/BOOT
@@ -186,6 +191,15 @@ universe() {
 	world
 }
 
+resetall() {
+	cd boot/
+	git restore .
+	cd ../kernel
+	git restore .
+	cd ../lib/libc
+	git restore .
+}
+
 case "$1" in
 	import) import ;;
 	bootloader) buildbootloader ;;
@@ -195,6 +209,8 @@ case "$1" in
 	iso) buildiso ;;
 	universe) universe ;;
 	world) world ;;
+	toolchain) buildtoolchain ;;
+	reset) resetall ;;
 	*)
 		echo "Usage: meta/build {target}"
 		echo "Supported TARGETS:"
